@@ -1,4 +1,4 @@
-package repository;
+package app.repository;
 
 import app.domain.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;

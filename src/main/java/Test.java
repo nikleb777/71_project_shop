@@ -1,5 +1,5 @@
 import app.domain.Customer;
-import repository.CustomerRepository;
+import app.repository.CustomerRepository;
 
 import java.io.IOException;
 
@@ -51,21 +51,21 @@ public class Test {
 
 
 //    public static void main(String[] args) throws IOException {
-//        ProductRepository repository = new ProductRepository();
+//        ProductRepository app.repository = new ProductRepository();
 //
 //        Product product = new Product(3, "Персик", 190, true);
-//        repository.save(product);
+//        app.repository.save(product);
 //
-//        repository.findAll().forEach(System.out::println);
+//        app.repository.findAll().forEach(System.out::println);
 //
-//        Product productById = repository.findById(1);
+//        Product productById = app.repository.findById(1);
 //        System.out.println("Найденный продукт");
 //        System.out.println(productById);
 //
 //        Product newProduct = new Product(1, "Яблоко", 80, true);
-//        repository.update(newProduct);
+//        app.repository.update(newProduct);
 //
-//        repository.deleteById(2);
+//        app.repository.deleteById(2);
 //    }
 public static void main(String[] args) throws IOException {
     CustomerRepository repository = new CustomerRepository();

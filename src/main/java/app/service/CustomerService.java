@@ -1,10 +1,12 @@
 package app.service;
 
 import app.domain.Customer;
-import exception.CustomerNotFoundException;
-import exception.CustomerSaveException;
-import exception.CustomerUpdateException;
-import repository.CustomerRepository;
+import app.domain.Product;
+import app.exception.CustomerNotFoundException;
+import app.exception.CustomerSaveException;
+import app.exception.CustomerUpdateException;
+import app.exception.ProductNotFoundException;
+import app.repository.CustomerRepository;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,12 +67,61 @@ public class CustomerService {
         getActiveCustomerById(id).setActive(false);
     }
 //    Удалить покупателя из базы данных по его имени.
+    public void deleteByName(String name) throws IOException {
+        getAllActiveCustomers()
+                .stream()
+                .filter(x -> x.getName().equals(name))
+                .forEach(x -> x.setActive(false));
+    }
 //    Восстановить удалённого покупателя в базе данных по его идентификатору.
+    public void restoreById(int id) throws IOException, CustomerNotFoundException {
+        Customer customer = repository.findById(id);
+
+        if (customer != null){
+            customer.setActive(true);
+        }else{
+            throw new CustomerNotFoundException(id);
+        }
+    }
 //    Вернуть общее количество покупателей в базе данных (активных).
-//    Вернуть стоимость корзины покупателя по его идентификатору (если он активен). • Вернуть среднюю стоимость продукта в корзине покупателя по его идентификатору (если он активен)
+    public int getActiveCustomerCount() throws IOException {
+        return getAllActiveCustomers().size();
+    }
+//    Вернуть стоимость корзины покупателя по его идентификатору (если он активен).
+    public double getCustomerCartTotalPrice(int id) throws IOException, CustomerNotFoundException {
+        return getActiveCustomerById(id)
+                .getProducts()
+                .stream()
+                .filter(Product::isActive)
+                .mapToDouble(Product::getPrice)
+                .sum();
+    }
+//    Вернуть среднюю стоимость продукта в корзине покупателя по его идентификатору (если он активен)
+public double getCustomerCartAveragePrice(int id) throws IOException, CustomerNotFoundException {
+    return getActiveCustomerById(id)
+            .getProducts()
+            .stream()
+            .filter(Product::isActive)
+            .mapToDouble(Product::getPrice)
+            .average()
+            .orElse(0.0);
+}
 //    Добавить товар в корзину покупателя по их идентификаторам (если оба активны)
-//    Удалить товар из корзины покупателя по их идентификаторам
+    public void addProductToCustomerCart(int customerId, int productId) throws IOException, CustomerNotFoundException, ProductNotFoundException {
+        Customer customer = getActiveCustomerById(customerId);
+        Product product = productService.getActiveProductById(productId);
+        customer.getProducts().add(product);
+    }
+//    Удалить товар из корзины покупателя по идентификатору
+    public void  removeProductFromCustomerCart(int customerId, int productId) throws IOException, CustomerNotFoundException, ProductNotFoundException {
+        Customer customer = getActiveCustomerById(customerId);
+        Product product = productService.getActiveProductById(productId);
+        customer.getProducts().remove(product);
+    }
 //    Полностью очистить корзину покупателя по его идентификатору (если он активен
+    public void clearCustomerCart(int id) throws IOException, CustomerNotFoundException {
+        getActiveCustomerById(id).getProducts().clear();
+    }
 
 
 }
