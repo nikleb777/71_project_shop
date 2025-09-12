@@ -39,7 +39,7 @@ service.update(customer);
         service.deleteById(id);
     }
 
-    public void deleteByName(String name) throws IOException {
+    public void deleteByName(String name) throws IOException, CustomerNotFoundException {
         service.deleteByName(name);
 
     }

@@ -1,7 +1,7 @@
 [ {
   "id" : 1,
   "name" : "Маша",
-  "active" : true,
+  "active" : false,
   "products" : [ ]
 }, {
   "id" : 2,
@@ -10,7 +10,12 @@
   "products" : [ ]
 }, {
   "id" : 3,
-  "name" : "Вова",
-  "active" : true,
+  "name" : "Владимир",
+  "active" : false,
+  "products" : [ ]
+}, {
+  "id" : 4,
+  "name" : "Алла",
+  "active" : false,
   "products" : [ ]
 } ]
